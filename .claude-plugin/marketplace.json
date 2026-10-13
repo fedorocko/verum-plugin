@@ -1,0 +1,15 @@
+{
+  "name": "verum-marketplace",
+  "owner": {
+    "name": "Peter Fedorocko",
+    "email": "peter.fedorocko@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "verum",
+      "source": "./verum",
+      "description": "Pojistné podmínky českých pojišťoven z databáze verum: vyhledávání a poradce pro výběr pojištění.",
+      "version": "1.0.0"
+    }
+  ]
+}

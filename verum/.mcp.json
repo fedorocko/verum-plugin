@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "verum": {
+      "type": "http",
+      "url": "https://verum-dev.fedorocko.com/api/mcp"
+    }
+  }
+}
