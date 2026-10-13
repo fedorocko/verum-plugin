@@ -1,8 +1,7 @@
 {
   "name": "verum-marketplace",
   "owner": {
-    "name": "Peter Fedorocko",
-    "email": "peter.fedorocko@gmail.com"
+    "name": "Peter Fedorocko"
   },
   "plugins": [
     {
