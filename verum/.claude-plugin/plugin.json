@@ -1,10 +1,10 @@
 {
   "name": "verum",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pojistné podmínky českých pojišťoven z databáze verum: vyhledávání podmínek, výluk a limitů (hledej) a poradce pro výběr pojištění (poradce).",
   "author": {
     "name": "Peter Fedorocko"
   },
-  "homepage": "https://verum-dev.fedorocko.com",
+  "homepage": "https://pojistnainteligence.cz",
   "license": "Proprietary"
 }

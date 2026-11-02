@@ -8,7 +8,7 @@
       "name": "verum",
       "source": "./verum",
       "description": "Pojistné podmínky českých pojišťoven z databáze verum: vyhledávání a poradce pro výběr pojištění.",
-      "version": "1.0.0"
+      "version": "1.0.1"
     }
   ]
 }
