@@ -2,7 +2,7 @@
 name: poradce
 description: "Pojišťovací poradce nad databází verum: krátce vyzpovídá uživatele (typ pojištění + 3 kola doplňujících otázek o pojišťovaném objektu – osobě, majetku, autě, firmě) a pak ve verum najde 3 pojišťovny a produkty, jejichž pojistné podmínky objektu nejlépe odpovídají. Použij vždy, když uživatel chce doporučit, vybrat nebo najít vhodné pojištění pro svůj konkrétní případ (byt, dům, chata, auto, život, firma, povinné ručení, havarijní), ptá se „jaké pojištění si vzít“, „kterou pojišťovnu zvolit“, „co je pro mě nejlepší“, nebo napíše /verum:poradce – i když nezmíní verum. Pro obecné dotazy na konkrétní podmínky či výluky bez výběru produktu stačí skill verum:hledej."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # verum:poradce
@@ -41,7 +41,7 @@ Po kole 4 shrň profil v tabulce **Profil objektu** (atribut | hodnota | proč j
 
 ## Krok 2 – Hledání ve verum
 
-1. Zavolej `list_institutions` a urči, které pojišťovny jsou pro daný typ relevantní (např. NN a MetLife jsou hlavně životní; Direct, ČPP, Kooperativa, Allianz, Generali, UNIQA, ČSOB, Slavia, HVP mají majetek i auta).
+1. Zavolej `list_institutions` a urči, které pojišťovny jsou pro daný typ relevantní (např. MetLife je hlavně životní; ČPP, Allianz, Generali, UNIQA, ČSOB, Slavia, HVP mají majetek i auta).
 2. Najdi **kandidátní produkty**: dotaz na typ produktu bez filtru, pak cíleně po jednotlivých pojišťovnách s `institutionId`, aby výsledky nedominovala jedna firma. Cílem je pokrýt aspoň 5–6 pojišťoven, pokud je verum má.
 3. **Ověř aktuálnost.** Z názvů dokumentů odvoď platnost. Zaniklé/archivní verze (např. „zaniklá“, „archiv“, „platné od … do …“ s koncem v minulosti) mezi kandidáty nepouštěj; pokud jiná verze není, zařaď je s jasným varováním.
 4. **Pro každé kritérium z profilu** spusť cílené dotazy (šablony dotazů jsou u každého typu v `references/dotazniky.md`). Opakuj s `institutionId` pro každého kandidáta, aby nevypadl jen proto, že nebyl v top výsledcích.
@@ -55,7 +55,7 @@ Pro každého kandidáta (pojišťovna × produkt) vyplň matici kritérií:
 - ✅ **splněno** – dokument to výslovně kryje / umožňuje,
 - 🟡 **částečně** – kryto s omezením (nízký limit, delší čekací doba, jen jako připojištění),
 - ❌ **nesplněno** – výslovná výluka nebo nemožnost,
-- ❔ **neuvedeno ve verum** – nenašlo se; nepočítá se jako ❌, ale snižuje jistotu.
+- ❔ **neuvedeno na pojistnainteligence.cz** – nenašlo se; nepočítá se jako ❌, ale snižuje jistotu.
 
 Pořadí: nejdřív vyřaď produkty s ❌ u nutného kritéria. Zbytek seřaď podle počtu ✅/🟡 u nutných, pak u žádoucích; při shodě vyhrává ten s méně ❔ (lépe doložený). Pokud méně než 3 produkty projdou, ukaž kolik jich prošlo a proč ostatní vypadly – nedoplňuj pořadí slabými kandidáty bez upozornění.
 
@@ -74,13 +74,13 @@ Pořadí: nejdřív vyřaď produkty s ❌ u nutného kritéria. Zbytek seřaď 
 **Vyřazené produkty**  (jen pokud nějaké)
 | Pojišťovna | Produkt | Důvod vyřazení | Zdroj |
 
-**Nedostupné ve verum**
+**Nedostupné na pojistnainteligence.cz**
 | Chybějící informace | Poznámka |
 
 **Zdroje**
 | # | Pojišťovna | Dokument | Strany | Odkaz |
 ```
 
-Pod tabulkami jedna řádka: *Pořadí vychází pouze z pojistných podmínek ve verum; nezohledňuje cenu ani individuální nabídku. Před sjednáním si ověřte aktuální podmínky a cenu u pojišťovny.*
+Pod tabulkami jedna řádka: *Pořadí vychází pouze z pojistných podmínek na pojistnainteligence.cz; nezohledňuje cenu ani individuální nabídku. Před sjednáním si ověřte aktuální podmínky a cenu u pojišťovny.*
 
 Pravidla pro buňky: čísla, limity, dny a pásma přepisuj přesně z dokumentu; ve sloupci „Proč sedí“ vždy odkazuj na konkrétní atribut profilu („kryje záplavu i v zóně Q20 – váš byt je v Q20“). Nic, co nepochází z verum, se v tabulkách neobjeví.
