@@ -2,7 +2,7 @@
 name: hledej
 description: "Answer any question about Czech insurance terms and conditions using ONLY the verum MCP connector, always in Czech, as tables. Use for pojištění, pojistné podmínky, výluky, plnění, čekací doby, srovnání pojišťoven."
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # verum:hledej
@@ -13,8 +13,9 @@ Answer the user's question exclusively from documents retrieved through the veru
 
 1. **Single source of truth.** Use only verum tool results. Do not use internal knowledge, web search, WebFetch, or any other tool to supply facts. Reasoning to combine or compare retrieved passages is fine; adding facts is not. If a fact is not in the retrieved text, it does not go in the answer.
 2. **Always answer in Czech**, whatever language the user writes in. Translate the question mentally, and search in Czech (the documents are Czech, so Czech queries retrieve best).
-3. **Missing information is stated, not filled in.** If verum does not contain the answer, say so explicitly (e.g. `Ve verum se k tomuto dotazu nenašla žádná informace.`). Never fall back to web search or general knowledge, and never guess. A partial answer is fine: answer what is supported and list what is missing.
+3. **Missing information is stated, not filled in.** If verum does not contain the answer, say so explicitly (e.g. `Na pojistnainteligence.cz se k tomuto dotazu nenašla žádná informace.`). Never fall back to web search or general knowledge, and never guess. A partial answer is fine: answer what is supported and list what is missing.
 4. **Format: structured, no prose.** Use tables instead of paragraphs. Short headings and a one-line lead-in are acceptable; explanatory paragraphs are not. Use bullet lists only when a table does not fit.
+5. **The connector's answer rules win.** The verum connector sends its answer rules in its server instructions and at the end of the description of each tool that returns document text. Follow them in every answer. Where this skill says something else, the answer rules win.
 
 ## Workflow
 
@@ -34,11 +35,11 @@ Main table first, then sources. Adapt columns to the question, but keep them fac
 ```
 **Dotaz:** <one-line restatement in Czech>
 
-| Pojišťovna | Produkt / dokument | Zjištění | Podmínky / výjimky | Strana |
+| Pojišťovna | Produkt / dokument | Zjištění | Podmínky / výjimky | Článek / strana |
 |---|---|---|---|---|
 | ... | ... | ... | ... | ... |
 
-**Nedostupné ve verum**
+**Nedostupné na pojistnainteligence.cz**
 
 | Chybějící informace | Poznámka |
 |---|---|
@@ -52,10 +53,10 @@ Main table first, then sources. Adapt columns to the question, but keep them fac
 ```
 
 Guidance:
-- Put the finding in the table cell in near-verbatim form, shortened but not reinterpreted. Where wording matters (limits, days, percentages), keep the exact figures and units from the document.
+- Fill the cells as the connector's answer rules say (Hard rule 5). Keep the exact figures and units from the document (limits, days, percentages).
 - Reference sources in the main table by number (`[1]`) and list them in the separate **Zdroje** table at the end, with `title`, `pageFrom`–`pageTo` and `sourceUrl` from the tool result.
-- Omit the **Nedostupné ve verum** table only when nothing is missing. If the whole question is unanswerable, show just that table with a one-line statement.
-- For comparisons, one row per insurer (or per product), same columns for all, so differences are visible at a glance. Mark a value as `neuvedeno ve verum` rather than leaving it blank.
+- Omit the **Nedostupné na pojistnainteligence.cz** table only when nothing is missing. If the whole question is unanswerable, show just that table with a one-line statement.
+- For comparisons, one row per insurer (or per product), same columns for all, so differences are visible at a glance. Mark a value as `neuvedeno na pojistnainteligence.cz` rather than leaving it blank.
 - If results conflict across documents or versions, show both rows and add a `Poznámka` column instead of picking one silently.
 - No advice or recommendations (e.g. which insurer is better) unless the retrieved text supports the claim; verum gives terms, not opinions.
 
