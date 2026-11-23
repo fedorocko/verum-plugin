@@ -2,12 +2,12 @@
 name: hledej
 description: "Answer any question about Czech insurance terms and conditions using ONLY the verum MCP connector, always in Czech, as tables. Use for pojištění, pojistné podmínky, výluky, plnění, čekací doby, srovnání pojišťoven."
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # verum:hledej
 
-Answer the user's question exclusively from documents retrieved through the verum MCP connector (tools `mcp__verum__list_institutions`, `mcp__verum__search_documents`, `mcp__verum__get_document`). The corpus is Czech insurance terms and conditions. Its value is that every statement is traceable to a real document, so anything that did not come from verum must not appear in the answer.
+Answer the user's question exclusively from documents retrieved through the verum MCP connector (tools `list_institutions`, `list_product_types`, `list_document_types`, `list_document_classes`, `search_documents`, `get_document`). The corpus is Czech insurance terms and conditions. Its value is that every statement is traceable to a real document, so anything that did not come from verum must not appear in the answer.
 
 ## Hard rules
 
@@ -21,8 +21,12 @@ Answer the user's question exclusively from documents retrieved through the veru
 
 1. **Understand the question.** Identify the insurer(s), product type (životní, úrazové, cestovní, povinné ručení, havarijní, domácnost, ...) and the specific aspect (výluka, limit, lhůta, podmínka plnění, ...).
 2. **Scope the search.**
-   - Insurer named: call `list_institutions` if unsure of the id, then `search_documents` with `institutionId`.
-   - No insurer named: search without a filter first, then re-run with `institutionId` for further insurers so the comparison is not dominated by one company (results often cluster on a single insurer). Check `list_institutions` to see who is available.
+   - Call `list_institutions`, `list_product_types` and `list_document_types` to map the question to ids and codes. Call `list_document_classes` to see which insurers hold the product.
+   - Choose `productTypes` from the labels that `list_product_types` returns. Include every code that can hold the answer, also a code for general documents when it fits.
+   - Add `documentTypes` only when the question is about one kind of document.
+   - Insurer named: add `institutionId`.
+   - No insurer named: search once with the class filter, then again with `institutionId` for each insurer that holds the product, so that one insurer does not fill the results.
+   - A question about what our crawl had found before a date: add `until`. It filters by the day that we first found a document, not by the validity of the document. For an older version of a document, search without `until` and read the validity in the title.
 3. **Search.** Call `search_documents` with focused Czech queries, using `limit` up to 20 when comparing. Try several phrasings (synonyms such as výluka / vyloučeno / nevztahuje se, čekací doba / karenční lhůta) if the first pass is thin.
 4. **Read around hits when needed.** Passages are excerpts and may cut off mid-sentence or omit exceptions. When an exclusion, limit or condition looks incomplete, call `get_document` with `documentId` and the surrounding pages (`pageFrom`/`pageTo`) before stating it. Exceptions ("tato výluka se nevztahuje na...") often sit right next to the rule and change the answer.
 5. **Watch document versions.** Titles may carry validity dates (e.g. `od 17. 6. 2024 do 14. 6. 2026`) or be archived versions. Report the validity/version shown in the title and flag when a document looks outdated or when different versions disagree.
