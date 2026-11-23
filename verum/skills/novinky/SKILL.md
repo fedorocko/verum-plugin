@@ -22,8 +22,8 @@ Find what the new documents add or change compared with the older documents.
 ## Workflow
 
 1. **List the new documents.** Call `list_new_documents`, with `days` or `institutionId` if the user gave them. Read every page with `offset` until `truncated` is false. Keep `since`.
-2. **Group them** by institution, product type and document type.
-3. **Pick at most 15 documents to analyse.** Call `list_document_types` and read the labels. Prefer the types that can change what a client is covered for or must do. Do not analyse a document with no class. Count every document that you skip.
+2. **Group them** by institution, product type and document type. Call `list_product_types` and `list_document_types`. Show their labels in the answer, never the codes.
+3. **Pick at most 15 documents to analyse.** Read the document type labels. Prefer the types that can change what a client is covered for or must do. Do not analyse a document with no class. Count every document that you skip.
 4. **Read each new document** with `get_document`. Note its main coverage, exclusions, limits and waiting periods.
 5. **Find the older version.** Call `search_documents` with `institutionId`, `until: <since>`, and the document's `productTypes` and `documentTypes`. Take the closest match with the newest `firstSeenAt`.
 6. **Compare the same topics** in the old and new text. Use `search_documents` and `get_document`.
