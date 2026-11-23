@@ -2,7 +2,7 @@
 name: hledej
 description: "Answer any question about Czech insurance terms and conditions using ONLY the verum MCP connector, always in Czech, as tables. Use for pojištění, pojistné podmínky, výluky, plnění, čekací doby, srovnání pojišťoven."
 metadata:
-  version: "1.0.1"
+  version: "1.1.0"
 ---
 
 # verum:hledej
